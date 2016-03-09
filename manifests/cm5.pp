@@ -104,6 +104,15 @@ class cloudera::cm5 (
     }
   }
 
+  case $::cloudera_agent_version {
+    /5.5.*/: {
+      $scm_file = 'scm-config-55.ini'
+    }
+    default: {
+      $scm_file = 'scm-config.ini'
+    }
+  }
+
   package { 'cloudera-manager-agent':
     ensure => $package_ensure,
     tag    => 'cloudera-manager',
@@ -116,10 +125,10 @@ class cloudera::cm5 (
     }
   }
 
-  file { 'scm-config.ini':
+  file { $scm_file :
     ensure  => $file_ensure,
     path    => '/etc/cloudera-scm-agent/config.ini',
-    content => template("${module_name}/scm-config.ini.erb"),
+    content => template("${module_name}/${scm_file}.erb"),
     require => Package['cloudera-manager-agent'],
     notify  => Service['cloudera-scm-agent'],
   }
