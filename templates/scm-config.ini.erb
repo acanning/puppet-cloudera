@@ -48,14 +48,19 @@ monitored_nodev_filesystem_types=nfs,nfs4,tmpfs
 [Security]
 <% if @use_tls -%>
 use_tls=1
-verify_cert_file=<%= @verify_cert_file %>
 <% else -%>
 use_tls=0
+<% end %>
+<% if @verify_cert_file %>
+verify_cert_file=<%= @verify_cert_file %>
+<% else %>
 # verify_cert_file=
 <% end -%>
-# client_key_file=
-# client_keypw_file=
-# client_cert_file=
+
+verify_cert_dir=/opt/cloudera/security/ca-certs/
+client_key_file=/opt/cloudera/security/x509/key.pem
+client_keypw_file=/etc/cloudera-scm-agent/agentkey.pw
+client_cert_file=/opt/cloudera/security/x509/cert.pem
 
 ## Location of Hadoop files. These are the CDH locations when installed by
 ## packages. These are not used when CDH is installed by parcels.
