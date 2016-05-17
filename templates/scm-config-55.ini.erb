@@ -117,14 +117,21 @@ dns_resolution_collection_timeout_seconds=30
 # agent_wide_credential_cache_location=/var/run/cloudera-scm-agent
 
 [Security]
-# Use TLS and certificate validation when connecting to the CM server.
 <% if @use_tls -%>
 use_tls=1
-verify_cert_file=<%= @verify_cert_file %>
 <% else -%>
 use_tls=0
+<% end %>
+<% if @verify_cert_file %>
+verify_cert_file=<%= @verify_cert_file %>
+<% else %>
 # verify_cert_file=
 <% end -%>
+
+verify_cert_dir=/opt/cloudera/security/ca-certs/
+client_key_file=/opt/cloudera/security/x509/key.pem
+client_keypw_file=/etc/cloudera-scm-agent/agentkey.pw
+client_cert_file=/opt/cloudera/security/x509/cert.pem
 
 # The maximum allowed depth of the certificate chain returned by the peer.
 # The default value of 9 matches the default specified in openssl's
